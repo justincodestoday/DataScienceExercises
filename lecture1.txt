@@ -1,0 +1,27 @@
+Compile Language:
+    - C family (C#, C++)
+    - Java
+    - Kotlin
+
+compiled into machine code
+high efficiency
+higher development time
+
+
+Interpret Language:
+    - JavaScript
+    - Python
+
+low efficiency
+lower development time
+
+
+
+Four methods to store an array:
+List []
+
+Tuple ()
+
+Set {}
+
+Dictionary {x : y}
