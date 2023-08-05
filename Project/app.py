@@ -48,7 +48,7 @@ def main():
     # done we got all the user inputs to predict and we need a button like a predict button we do that by "st.button()"
     # after hitting the button the prediction process will go on and then we print the success message by "st.success()"
     if st.button("Predict"):
-        result=predict_popu(duration_ms, danceability, energy, loudness, speechiness, acousticness, valence)
+        result = predict_popu(duration_ms, danceability, energy, loudness, speechiness, acousticness, valence)
         st.success('The Popularity of the song is {}'.format(result))
 
 if __name__=='__main__':
