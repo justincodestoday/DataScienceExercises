@@ -13,31 +13,29 @@ with open('popularity_model.h5', 'rb') as model_file:
 labels = [
     {'Genre': 'EDM', 'Label': 0},
     {'Genre': 'R&B', 'Label': 1},
-    {'Genre': 'acoustic folk', 'Label': 2},
-    {'Genre': 'country', 'Label': 3},
-    {'Genre': 'hip hop', 'Label': 4},
-    {'Genre': 'latin', 'Label': 5},
-    {'Genre': 'metal', 'Label': 6},
-    {'Genre': 'pop', 'Label': 7},
-    {'Genre': 'rock', 'Label': 8},
+    {'Genre': 'Acoustic Folk', 'Label': 2},
+    {'Genre': 'Country', 'Label': 3},
+    {'Genre': 'Hip Hop', 'Label': 4},
+    {'Genre': 'Latin', 'Label': 5},
+    {'Genre': 'Metal', 'Label': 6},
+    {'Genre': 'Pop', 'Label': 7},
+    {'Genre': 'Rock', 'Label': 8},
 ]
     
-def predict_genre(danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence):
+def predict_genre(danceability, energy, speechiness, acousticness, liveness, valence):
     """
     this method is for predicting genre
     takes all the Audio characteristics that we used for modelling and returns the prediction 
     """
-    prediction = genre_model.predict([[danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness,
-                                 valence]])
+    prediction = genre_model.predict([[danceability, energy, speechiness, acousticness, liveness, valence]])
     return prediction[0]
 
-def predict_popularity(danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence):
+def predict_popularity(danceability, energy, speechiness, acousticness, liveness, valence):
     """
     this method is for predicting popularity
     takes all the Audio characteristics that we used for modelling and returns the prediction 
     """
-    prediction = model.predict([[danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness,
-                                 valence]])
+    prediction = model.predict([[danceability, energy, speechiness, acousticness, liveness, valence]])
     return prediction[0]
 
 def main():
@@ -56,23 +54,28 @@ def main():
     components.html(html_temp2)
     # components.html() will render the render the html component
         
-    danceability = st.number_input("danceability", min_value=0.0, max_value=1.0, step=0.1)
-    energy = st.number_input("energy", min_value=0.0, max_value=1.0, step=0.1)
-    loudness = st.number_input("loudness", min_value=-60.0, max_value=0.0, step=0.1)
+    danceability = st.number_input("danceability", min_value=0.00, max_value=1.00, step=0.05)
+    energy = st.number_input("energy", min_value=0.00, max_value=1.00, step=0.05)
     speechiness = st.number_input("speechiness", min_value=0.00, max_value=1.00, step=0.05)
     acousticness = st.number_input("acousticness", min_value=0.00, max_value=1.00, step=0.05)
-    instrumentalness = st.slider('instrumentalness', min_value=0.000000, max_value=1.000000, value=0.000050, step=0.005000)    
     liveness = st.number_input("liveness", min_value=0.00, max_value=1.00, step=0.05)
     valence = st.number_input("valence", min_value=0.00, max_value=1.00, step=0.05)
     
     genre=""
     result=""
     if st.button("Predict"):
-        st.table(labels)
-        genre = predict_genre(danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence)
-        result = predict_popularity(danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, 
-                                    valence)
-        st.success('The song is a {}'.format(genre))
+#         st.table(labels)
+        genre = predict_genre(danceability, energy, speechiness, acousticness, liveness, valence)
+        result = predict_popularity(danceability, energy, speechiness, acousticness, liveness, valence)
+        
+        for item in labels:
+            if item['Label'] == genre:
+                genre = item['Genre']
+                break
+            else:
+                print('Label not found')
+
+        st.success("The song's genre is {}".format(genre))
         st.success('The Popularity of the song is {}'.format(result))
 
 if __name__=='__main__':
